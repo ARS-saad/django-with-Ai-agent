@@ -9,10 +9,13 @@ class Document(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(default='Title')
     content = models.TextField(blank=True, null=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)  # type: ignore
     active_at = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"<Document: {self.title}>"
 
     def save(self, *args, **kwargs):
         if self.active and self.active_at is None:
