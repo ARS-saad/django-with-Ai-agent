@@ -5,7 +5,7 @@ from langchain_openai import ChatOpenAI
 def get_openai_api_key():
     return settings.OPENAI_API_KEY
 
-def get_openai_model(model="gpt-4o-mini"):
+def get_openai_model(model="gpt-3.5-turbo"):
     return ChatOpenAI(
         model=model,
         temperature=0,

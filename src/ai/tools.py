@@ -5,15 +5,16 @@ from langchain_core.runnables import RunnableConfig
 @tool
 def list_documents(config: RunnableConfig):
     """
-    Get documents for the current user.
+    List the most recent 5 documents for the current user.
     """
+    limit = 5
     metadata = config.get('metadata') or config.get('configurable')
     user_id = metadata.get('user_id')  # type: ignore
     if user_id is None:
         raise Exception("User id is not found")
-    qs = Document.objects.filter(active=True) # type: ignore
+    qs = Document.objects.filter(active=True).order_by('-created_at') # type: ignore
     response_data = []
-    for obj in qs:
+    for obj in qs[:limit]:
         response_data.append(
             {
                 "id": obj.id,
@@ -45,3 +46,8 @@ def get_document(document_id: int, config: RunnableConfig):
     }
 
     return response_data
+
+document_tools = [
+    list_documents,
+    get_document,
+]
